@@ -1,9 +1,9 @@
 @echo off
 cls & echo ======================
 echo Debloated - A bloatware removal tool made in batch by Marc& echo.
-echo remove durt in Start Menu
+echo Remove durt in Start Menu
 echo ======================& echo.
-for /f %%a in ('REG QUERY HKCU\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount /s /k /f placeholdertilecollection') do (reg delete %%a\current /VA /F)
+for /f %%a in ('REG QUERY HKCU\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount /s /k /f placeholdertilecollection') do (reg delete %%a\current /VA /F 2> nul)
 taskkill /f /im explorer.exe & start explorer.exe 2> nul
 
 echo Changing Menu...& echo.
