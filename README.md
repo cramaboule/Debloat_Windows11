@@ -3,3 +3,6 @@
 
 Put both files in the same folder, 
 Run ```As Administrator``` the .bat file, and let the magic happens
+a reboot is really recommanded at the end of the process in order to remove everything
+
+Enjoy!
