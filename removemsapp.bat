@@ -1,4 +1,9 @@
 @echo off
+
+::# elevate with native shell by AveYo
+>nul reg add hkcu\software\classes\.Admin\shell\runas\command /f /ve /d "cmd /x /d /r set \"f0=%%2\"& call \"%%2\" %%3"& set _= %*
+>nul fltmc|| if "%f0%" neq "%~f0" (cd.>"%temp%\runas.Admin" & start "%~n0" /high "%temp%\runas.Admin" "%~f0" "%_:"=""%" & exit /b)
+
 cls & echo ======================
 echo Debloated - A bloatware removal tool made in batch by Marc& echo.
 echo Remove durt in Start Menu
@@ -24,7 +29,7 @@ echo ======================
 echo Remove packages first stage. Please Wait...
 echo ====================== & echo.
 
-TASKKILL /f /im OneDrive.exe >2>nul
+TASKKILL /f /im OneDrive.exe 2>nul
 %systemroot%\System32\OneDriveSetup.exe /uninstall 2> nul
 %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall 2> nul
 powershell -command "Get-Content %~dp0removepack.txt | ForEach-Object {Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers}" 2> nul
