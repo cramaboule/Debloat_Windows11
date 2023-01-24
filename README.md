@@ -4,6 +4,8 @@
 Put both files in the same folder, 
 Run ```As Administrator``` the .bat file, and let the magic happens.
 
+Tested on Windows 11 22H2, Family and Pro
+
 A reboot is really recommanded at the end of the process in order to remove everything
 
 Enjoy!
