@@ -5,41 +5,44 @@
 >nul fltmc|| if "%f0%" neq "%~f0" (cd.>"%temp%\runas.Admin" & start "%~n0" /high "%temp%\runas.Admin" "%~f0" "%_:"=""%" & exit /b)
 
 cls & echo ======================
-echo Debloated - A bloatware removal tool made in batch by Marc& echo.
-echo Remove durt in Start Menu
+echo Debloated - A bloatware removal tool made in batch by Marc
+echo Remove dirt in Start Menu
 echo ======================& echo.
 for /f %%a in ('REG QUERY HKCU\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount /s /k /f placeholdertilecollection') do (reg delete %%a\current /VA /F 2> nul)
 taskkill /f /im explorer.exe & start explorer.exe 2> nul
 
-echo Changing Menu...& echo.
+echo.
+echo ======================
+echo Changing Menu...
+echo ====================== & echo.
+
 reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "TaskbarAl" /t REG_DWORD /d 0 /f
 reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "TaskbarMn" /t REG_DWORD /d 0 /f
 reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "ShowTaskViewButton" /t REG_DWORD /d 0 /f
 reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Search /v "SearchboxTaskbarMode" /t REG_DWORD /d 0 /f
 
-
+echo.
 echo ======================
 echo Install winget
 echo ====================== & echo.
 
 ::installing dependies
-powershell -command "$ProgressPreference = 'SilentlyContinue' ; Get-AppxPackage -allusers *WindowsStore* | Remove-AppxPackage -allusers ; Invoke-WebRequest -Uri  https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile .\Microsoft.VCLibs.x64.14.00.Desktop.appx  ; Invoke-WebRequest -Uri  https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile .\microsoft.ui.xaml.2.7.3.nupkg.zip  ; Expand-Archive -Path .\microsoft.ui.xaml.2.7.3.nupkg.zip -Force ; Add-AppXPackage -Path .\microsoft.ui.xaml.2.7.3.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx; Add-AppXPackage -Path .\Microsoft.VCLibs.x64.14.00.Desktop.appx ; Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle ; Add-AppXPackage -Path .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle" 2> nul
+powershell -command "$ProgressPreference = 'SilentlyContinue' ; Get-AppxPackage -allusers *WindowsStore* | Remove-AppxPackage -allusers ; Invoke-WebRequest -Uri  https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile .\Microsoft.VCLibs.x64.14.00.Desktop.appx  ; Invoke-WebRequest -Uri  https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile .\microsoft.ui.xaml.2.7.3.nupkg.zip  ; Expand-Archive -Path .\microsoft.ui.xaml.2.7.3.nupkg.zip -Force ; Add-AppXPackage -Path .\microsoft.ui.xaml.2.7.3.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx; Add-AppXPackage -Path .\Microsoft.VCLibs.x64.14.00.Desktop.appx ; Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.4.10173/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle ; Add-AppXPackage -Path .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle" 2> nul
 
-echo ======================
+cls & echo ======================
 echo Remove packages first stage. Please Wait...
 echo ====================== & echo.
 
+echo OneDrive
 TASKKILL /f /im OneDrive.exe 2>nul
 %systemroot%\System32\OneDriveSetup.exe /uninstall 2> nul
 %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall 2> nul
-powershell -command "Get-Content %~dp0removepack.txt | ForEach-Object {Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers}" 2> nul
+powershell -command "(\"Microsoft.549981C3F5F10\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.HEIFImageExtension\", \"Microsoft.HEVCVideoExtension\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.RawImageExtension\", \"Microsoft.Todos\", \"Microsoft.VP9VideoExtensions\", \"Microsoft.WebMediaExtensions\", \"Microsoft.WebpImageExtension\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.WindowsTerminal\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers}" 2> nul
 
-echo ======================
+cls & echo ======================
 echo Remove packages segond stage. Please Wait...
 echo ====================== & echo.
-echo.
 winget -v
-echo.
 echo.
 ::Cortana
 winget uninstall cortana --accept-source-agreements --silent
@@ -74,10 +77,13 @@ winget uninstall Microsoft.Getstarted_8wekyb3d8bbwe --accept-source-agreements -
 ::3D Viewer
 winget uninstall 9NBLGGH42THS --accept-source-agreements --silent
 
+:: 3D Builder
+winget uninstall Microsoft.3DBuilder_8wekyb3d8bbwe --accept-source-agreements --silent
+
 ::MS Solitaire
 winget uninstall Microsoft.MicrosoftSolitaireCollection_8wekyb3d8bbwe --accept-source-agreements --silent
 
-::Paint-3D...
+::Paint-3D
 winget uninstall 9NBLGGH5FV99 --accept-source-agreements --silent
 
 ::Weather 
@@ -163,6 +169,8 @@ winget uninstall Microsoft.WindowsCamera_8wekyb3d8bbwe --accept-source-agreement
 winget uninstall MicrosoftWindows.Client.WebExperiencecw5n1h2txyewy --accept-source-agreements --silent
 :: PC Health tool
 winget uninstall {6A2A8076-135F-4F55-BB02-DED67C8C6934} --accept-source-agreements --silent
+:: Microsoft Update Health Tool
+winget uninstall {80F1AF52-7AC0-42A3-9AF0-689BFB271D1D} --accept-source-agreements --silent
 
 :: Sometimes it is not installed
 :: Screen Capture
