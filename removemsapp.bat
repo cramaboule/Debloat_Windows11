@@ -6,11 +6,13 @@
 
 cls & echo ======================
 echo Debloated - A bloatware removal tool made in batch by Marc
-echo Remove dirt in Start Menu and remove 'Let's finish setting up your device'
+echo Remove dirt in Start Menu and do some tweaks
 echo ======================& echo.
 for /f %%a in ('REG QUERY HKCU\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount /s /k /f placeholdertilecollection') do (reg delete %%a\current /VA /F 2> nul)
-REG add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v "ScoobeSystemSettingEnabled" /t REG_DWORD /d 0 /f 
+REG add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v "ScoobeSystemSettingEnabled" /t REG_DWORD /d 0 /f 2> nul
 taskkill /f /im explorer.exe & start explorer.exe 2> nul
+:: Show file extensions
+REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "HideFileExt" /t REG_DWORD /d 0 /f 2> nul
 
 
 echo.
