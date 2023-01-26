@@ -3,17 +3,15 @@
 ::# elevate with native shell by AveYo
 >nul reg add hkcu\software\classes\.Admin\shell\runas\command /f /ve /d "cmd /x /d /r set \"f0=%%2\"& call \"%%2\" %%3"& set _= %*
 >nul fltmc|| if "%f0%" neq "%~f0" (cd.>"%temp%\runas.Admin" & start "%~n0" /high "%temp%\runas.Admin" "%~f0" "%_:"=""%" & exit /b)
-
+title Debloat - A bloatware removal tool made in batch by Cramaboule
 cls & echo ======================
-echo Debloated - A bloatware removal tool made in batch by Marc
 echo Remove dirt in Start Menu and do some tweaks
 echo ======================& echo.
 for /f %%a in ('REG QUERY HKCU\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount /s /k /f placeholdertilecollection') do (reg delete %%a\current /VA /F 2> nul)
 REG add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v "ScoobeSystemSettingEnabled" /t REG_DWORD /d 0 /f 2> nul
-taskkill /f /im explorer.exe & start explorer.exe 2> nul
 :: Show file extensions
 REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "HideFileExt" /t REG_DWORD /d 0 /f 2> nul
-
+taskkill /f /im explorer.exe & start explorer.exe 2> nul
 
 echo.
 echo ======================
@@ -186,6 +184,21 @@ winget install --id 9WZDNCRFJBH4 --accept-source-agreements --silent --accept-pa
 ::Notepad
 winget install --id 9MSMLRH6LZF3 --accept-source-agreements --silent --accept-package-agreements
 
+
+CHOICE /c YN /M "Do you want to run Clean Manager"
+if %ERRORLEVEL% == 1 (CALL :sub_Clean)
+
+CHOICE /c YN /M "Do you want to reboot now"
+if %ERRORLEVEL% == 1 (shutdown -r -f -t 00)
+
 cls & echo Done. Thank you for using this tool. ==== Reboot is recommended ====& echo. 
 pause
 exit
+
+:sub_Clean
+echo Cleanning, Please Wait...
+for /f "delims=" %%a in ('REG QUERY HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches /s /k /f *') do (
+	REG add "%%a" /v "StateFlags0005 " /t REG_DWORD /d 2 /f >nul 2>&1 )
+
+CleanMgr.exe /sagerun:5
+exit /B
