@@ -135,7 +135,12 @@ winget uninstall Microsoft.OneDrive --accept-source-agreements --silent
 
 
 ::Windows 11 Bloatware
-
+:: Messages opérateur Windows
+winget uninstall Microsoft.Messaging_8wekyb3d8bbwe --accept-source-agreements --silent
+:: print 3D
+winget uninstall Microsoft.Print3D_8wekyb3d8bbwe --accept-source-agreements --silent
+:: One Connect
+winget uninstall Microsoft.OneConnect_8wekyb3d8bbwe --accept-source-agreements --silent																   
 ::Microsoft TO Do
 winget uninstall Microsoft.Todos_8wekyb3d8bbwe --accept-source-agreements --silent
 ::Power Automate
