@@ -39,7 +39,7 @@ echo OneDrive
 TASKKILL /f /im OneDrive.exe 2>nul
 %systemroot%\System32\OneDriveSetup.exe /uninstall 2> nul
 %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall 2> nul
-powershell -command "(\"*Store*\", \"Microsoft.549981C3F5F10\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.HEVCVideoExtension\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.RawImageExtension\", \"Microsoft.Todos\", \"Microsoft.VP9VideoExtensions\", \"Microsoft.WebMediaExtensions\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.WindowsTerminal\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like $_ | Remove-AppxProvisionedPackage -online}" 2> nul
+powershell -command "(\"*Store*\", \"Microsoft.549981C3F5F10\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.Todos\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.WindowsTerminal\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like $_ | Remove-AppxProvisionedPackage -online}" 2> nul
 
 cls & echo ======================
 echo Remove packages segond stage. Please Wait...
@@ -140,7 +140,7 @@ winget uninstall Microsoft.Messaging_8wekyb3d8bbwe --accept-source-agreements --
 :: print 3D
 winget uninstall Microsoft.Print3D_8wekyb3d8bbwe --accept-source-agreements --silent
 :: One Connect
-winget uninstall Microsoft.OneConnect_8wekyb3d8bbwe --accept-source-agreements --silent																   
+winget uninstall Microsoft.OneConnect_8wekyb3d8bbwe --accept-source-agreements --silent
 ::Microsoft TO Do
 winget uninstall Microsoft.Todos_8wekyb3d8bbwe --accept-source-agreements --silent
 ::Power Automate
@@ -163,12 +163,12 @@ winget uninstall SpotifyAB.SpotifyMusic_zpdnekdrzrea0 --accept-source-agreements
 ::Microsoft Store
 winget uninstall Microsoft.WindowsStore_8wekyb3d8bbwe --accept-source-agreements --silent
 :: Other stuff
-winget uninstall Microsoft.HEVCVideoExtension_8wekyb3d8bbwe --accept-source-agreements --silent
+::winget uninstall Microsoft.HEVCVideoExtension_8wekyb3d8bbwe --accept-source-agreements --silent
 winget uninstall Microsoft.LanguageExperiencePackfr-FR_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.RawImageExtension_8wekyb3d8bbwe --accept-source-agreements --silent
+::winget uninstall Microsoft.RawImageExtension_8wekyb3d8bbwe --accept-source-agreements --silent
 winget uninstall Microsoft.StorePurchaseApp_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.VP9VideoExtensions_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.WebMediaExtensions_8wekyb3d8bbwe --accept-source-agreements --silent
+::winget uninstall Microsoft.VP9VideoExtensions_8wekyb3d8bbwe --accept-source-agreements --silent
+::winget uninstall Microsoft.WebMediaExtensions_8wekyb3d8bbwe --accept-source-agreements --silent
 winget uninstall Microsoft.WindowsAlarms_8wekyb3d8bbwe --accept-source-agreements --silent
 winget uninstall Microsoft.WindowsCamera_8wekyb3d8bbwe --accept-source-agreements --silent
 winget uninstall MicrosoftWindows.Client.WebExperiencecw5n1h2txyewy --accept-source-agreements --silent
@@ -178,6 +178,8 @@ winget uninstall {6A2A8076-135F-4F55-BB02-DED67C8C6934} --accept-source-agreemen
 winget uninstall {80F1AF52-7AC0-42A3-9AF0-689BFB271D1D} --accept-source-agreements --silent
 
 :: Sometimes it is not installed
+::reinstall Windows Store
+wsreset -i
 :: Screen Capture
 winget install --id 9MZ95KL8MR0L --accept-source-agreements --silent --accept-package-agreements
 ::Paint
@@ -188,6 +190,7 @@ winget install --id 9WZDNCRFHVN5 --accept-source-agreements --silent --accept-pa
 winget install --id 9WZDNCRFJBH4 --accept-source-agreements --silent --accept-package-agreements
 ::Notepad
 winget install --id 9MSMLRH6LZF3 --accept-source-agreements --silent --accept-package-agreements
+
 
 cls
 CHOICE /c YN /M "Do you want to run Clean Manager"
