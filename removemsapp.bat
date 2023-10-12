@@ -162,7 +162,7 @@ winget uninstall 5319275A.WhatsAppDesktop_cv1g1gvanyjgm --accept-source-agreemen
 ::Spotify Music
 winget uninstall SpotifyAB.SpotifyMusic_zpdnekdrzrea0 --accept-source-agreements --silent
 ::Microsoft Store
-winget uninstall Microsoft.WindowsStore_8wekyb3d8bbwe --accept-source-agreements --silent
+::winget uninstall Microsoft.WindowsStore_8wekyb3d8bbwe --accept-source-agreements --silent
 :: Other stuff
 ::winget uninstall Microsoft.HEVCVideoExtension_8wekyb3d8bbwe --accept-source-agreements --silent
 winget uninstall Microsoft.LanguageExperiencePackfr-FR_8wekyb3d8bbwe --accept-source-agreements --silent
