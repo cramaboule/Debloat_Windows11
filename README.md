@@ -3,7 +3,7 @@
 
 Run the .bat file, and let the magic happens.
 
-Tested on Windows 11 22H2, Family and Pro
+Tested on Windows 11 22H2, Family and Pro, Build 22621.2428
 
 A reboot is really recommanded at the end of the process in order to remove everything
 
