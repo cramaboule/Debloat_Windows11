@@ -3,16 +3,21 @@
 
 Run the .bat file, and let the magic happens.
 
-Tested on Windows 11 22H2, Family and Pro, Build 22621.2428
+Tested on Windows 11 22H2, Family and Pro, Build 22621.2428.
 
-A reboot is really recommanded at the end of the process in order to remove everything
+In order to make your own Sart Menu as you wish, make you own start2.bin as explain here: https://superuser.com/a/1690893/996827. Mine is like on the picture (Explorer and parameters).
+
+A reboot is really recommanded at the end of the process in order to remove everything.
 
 Enjoy!
 
 Before:
 
-![TeamViewer_716TCFQPUg](https://user-images.githubusercontent.com/21193662/214811547-d92d33f3-f554-4c24-8b91-c762157e64f7.png)
+![image](https://github.com/cramaboule/Debloat_Windows11/assets/21193662/ae8b9872-cd9b-44c7-8a93-7345e6b4fbf0)
+
+
 
 After:
 
-![TeamViewer_3OpFn01N98](https://user-images.githubusercontent.com/21193662/214811600-c7b504a9-39e8-49b8-bb13-c8a24f75186f.png)
+![image](https://github.com/cramaboule/Debloat_Windows11/assets/21193662/457075f2-f66d-4b56-9b4c-37af7681545f)
+
