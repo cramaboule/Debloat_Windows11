@@ -155,8 +155,13 @@ winget uninstall Microsoft.OneDrive --accept-source-agreements --silent
 ::Calculator
 :: winget uninstall Microsoft.WindowsCalculator_8wekyb3d8bbwe --accept-source-agreements --silent
 
+::Outlook for Microsoft
+winget uninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe --accept-source-agreements --silent
+
 
 ::Windows 11 Bloatware
+::Power Automate
+winget uninstall Microsoft.DevHome --accept-source-agreements --silent
 :: Messages opérateur Windows
 winget uninstall Microsoft.Messaging_8wekyb3d8bbwe --accept-source-agreements --silent
 :: print 3D
