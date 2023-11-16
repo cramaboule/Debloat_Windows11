@@ -160,8 +160,12 @@ winget uninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe --accept-source-agree
 
 
 ::Windows 11 Bloatware
-::Power Automate
-winget uninstall Microsoft.DevHome --accept-source-agreements --silent
+:: LinkedIn
+winget uninstall 7EE7776C.LinkedInforWindows_w1wdnht996qgy --accept-source-agreements --silent
+:: Camo Studio
+winget uninstall ReincubateLtd.CamoStudio_9bq3v28c93p4r --accept-source-agreements --silent
+:: Outlook for Windows
+winget uninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe --accept-source-agreements --silent
 :: Messages opérateur Windows
 winget uninstall Microsoft.Messaging_8wekyb3d8bbwe --accept-source-agreements --silent
 :: print 3D
