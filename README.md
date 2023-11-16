@@ -6,6 +6,7 @@ Run the .bat file, and let the magic happens.
 Tested on :
 - Windows 11 22H2, Family and Pro, Build 22621.2428
 - Windows 11 23H2, Family and Pro, Build 22631.2506
+- Windows 11 23H2, Family and Pro, Build 22631.2715
 
 In order to make your own Sart Menu as you wish, make you own start2.bin as explain here: https://superuser.com/a/1690893/996827. Mine is like on the picture (Explorer and parameters).
 
