@@ -1,4 +1,6 @@
 @echo off
+:: V1.3
+
 
 ::# elevate with native shell by AveYo
 >nul reg add hkcu\software\classes\.Admin\shell\runas\command /f /ve /d "cmd /x /d /r set \"f0=%%2\"& call \"%%2\" %%3"& set _= %*
@@ -160,10 +162,6 @@ winget uninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe --accept-source-agree
 
 
 ::Windows 11 Bloatware
-:: LinkedIn
-winget uninstall 7EE7776C.LinkedInforWindows_w1wdnht996qgy --accept-source-agreements --silent
-:: Camo Studio
-winget uninstall ReincubateLtd.CamoStudio_9bq3v28c93p4r --accept-source-agreements --silent
 :: Outlook for Windows
 winget uninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe --accept-source-agreements --silent
 :: Messages opérateur Windows
@@ -184,8 +182,22 @@ winget uninstall MicrosoftTeams_8wekyb3d8bbwe --accept-source-agreements --silen
 winget uninstall MicrosoftCorporationII.MicrosoftFamily_8wekyb3d8bbwe --accept-source-agreements --silent
 ::Quick Assist
 winget uninstall MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe --accept-source-agreements --silent
+::Power Automate
+winget uninstall Microsoft.DevHome --accept-source-agreements --silent
+::Microsoft Whiteboard
+winget uninstall Microsoft.Whiteboard_8wekyb3d8bbwe --accept-source-agreements --silent
 ::Third-Party Preinstalled bloat
+:: Disney+
 winget uninstall disney+ --accept-source-agreements --silent
+:: LinkedIn
+winget uninstall 7EE7776C.LinkedInforWindows_w1wdnht996qgy --accept-source-agreements --silent
+:: Camo Studio
+winget uninstall ReincubateLtd.CamoStudio_9bq3v28c93p4r --accept-source-agreements --silent
+::OMEN Gaming Hub
+winget uninstall AD2F1837.OMENCommandCenter_v10z8vjag6ke6 --accept-source-agreements --silent
+::Dropbox - offre promotionnelle
+winget uninstall C27EB4BA.DropboxOEM_xbfy0k16fey96 --accept-source-agreements --silent
+::Clipchamp
 winget uninstall Clipchamp.Clipchamp_yxz26nhyzhsrt --accept-source-agreements --silent
 ::WhatsApp
 winget uninstall 5319275A.WhatsAppDesktop_cv1g1gvanyjgm --accept-source-agreements --silent
