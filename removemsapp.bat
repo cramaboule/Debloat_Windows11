@@ -166,6 +166,7 @@ winget uninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe --accept-source-agree
 winget uninstall 26720RandomSaladGamesLLC.3899848563C1F_kx24dqmazqk8j --accept-source-agreements --silent
 winget uninstall 26720RandomSaladGamesLLC.Spades_kx24dqmazqk8j --accept-source-agreements --silent
 winget uninstall Google.PlayGames.Beta --accept-source-agreements --silent
+winget uninstall AD2F1837.OMENCommandCenter_v10z8vjag6ke6 --accept-source-agreements --silent
 :: Outlook for Windows
 winget uninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe --accept-source-agreements --silent
 :: Messages opérateur Windows
@@ -197,8 +198,6 @@ winget uninstall disney+ --accept-source-agreements --silent
 winget uninstall 7EE7776C.LinkedInforWindows_w1wdnht996qgy --accept-source-agreements --silent
 :: Camo Studio
 winget uninstall ReincubateLtd.CamoStudio_9bq3v28c93p4r --accept-source-agreements --silent
-::OMEN Gaming Hub
-winget uninstall AD2F1837.OMENCommandCenter_v10z8vjag6ke6 --accept-source-agreements --silent
 ::Dropbox - offre promotionnelle
 winget uninstall C27EB4BA.DropboxOEM_xbfy0k16fey96 --accept-source-agreements --silent
 ::Clipchamp
