@@ -1,5 +1,5 @@
 @echo off
-:: V1.4
+:: V1.5
 
 
 ::# elevate with native shell by AveYo
@@ -44,7 +44,11 @@ echo Install winget
 echo ====================== & echo.
 
 ::installing dependies and Winget
-powershell -command "$ProgressPreference = 'SilentlyContinue' ; write-host "Downloading and Installing dependies" ; Invoke-WebRequest -Uri  https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile .\Microsoft.VCLibs.x64.14.00.Desktop.appx ; Invoke-WebRequest -Uri  https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile .\microsoft.ui.xaml.2.7.3.nupkg.zip ; Expand-Archive -Path .\microsoft.ui.xaml.2.7.3.nupkg.zip -Force ; Add-AppXPackage -Path .\microsoft.ui.xaml.2.7.3.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx; Add-AppXPackage -Path .\Microsoft.VCLibs.x64.14.00.Desktop.appx ; write-host "Installing Winget" ;  Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.6.2771/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle ; Add-AppXPackage -Path .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle" 2> nul
+:: check if Winget is already installed
+winget -v 2> nul
+IF %ERRORLEVEL% NEQ 0 (
+	powershell -command "$ProgressPreference = 'SilentlyContinue' ; write-host "Downloading and Installing dependies" ; Invoke-WebRequest -Uri  https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile .\Microsoft.VCLibs.x64.14.00.Desktop.appx ; Invoke-WebRequest -Uri  https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile .\microsoft.ui.xaml.2.7.3.nupkg.zip ; Expand-Archive -Path .\microsoft.ui.xaml.2.7.3.nupkg.zip -Force ; Add-AppXPackage -Path .\microsoft.ui.xaml.2.7.3.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx; Add-AppXPackage -Path .\Microsoft.VCLibs.x64.14.00.Desktop.appx ; write-host "Installing Winget" ;  Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.6.2771/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle ; Add-AppXPackage -Path .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle" 2> nul
+)
 
 cls & echo ======================
 echo Remove packages first stage. Please Wait...
@@ -239,19 +243,9 @@ winget install --id 9MSMLRH6LZF3 --accept-source-agreements --silent --accept-pa
 
 
 cls
-CHOICE /c YN /M "Do you want to run Clean Manager"
-if %ERRORLEVEL% == 1 (CALL :sub_Clean)
-
 CHOICE /c YN /M "Do you want to reboot now"
 if %ERRORLEVEL% == 1 (shutdown -r -f -t 00)
 
 cls & echo Done. Thank you for using this tool. ==== Reboot is recommended ====& echo. 
 pause
 exit
-
-:sub_Clean
-echo Cleanning, Please Wait...
-for /f "delims=" %%a in ('REG QUERY HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches /s /k /f *') do (
-	REG add "%%a" /v "StateFlags0005 " /t REG_DWORD /d 2 /f >nul 2>&1 )
-CleanMgr.exe /sagerun:5
-exit /B
