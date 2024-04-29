@@ -1,5 +1,5 @@
 @echo off
-:: V1.7
+:: V1.8
 
 
 ::# elevate with native shell by AveYo
@@ -16,6 +16,11 @@ REG add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v 
 REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "HideFileExt" /t REG_DWORD /d 0 /f 2> nul
 :: Enable Get Latest Updates as soon as available
 REG add HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings /v "IsContinuousInnovationOptedIn" /t REG_DWORD /d 1 /f 2> nul
+:: do not put screen and pc to sleep
+powercfg /change monitor-timeout-ac 0 2> nul
+powercfg /change monitor-timeout-dc 0 2> nul
+powercfg /change standby-timeout-ac 0 2> nul
+powercfg /change standby-timeout-dc 0 2> nul
 
 echo.
 echo ======================
