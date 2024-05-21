@@ -1,11 +1,13 @@
 @echo off
-:: V1.8
+:: V1.10
 
 
 ::# elevate with native shell by AveYo
 >nul reg add hkcu\software\classes\.Admin\shell\runas\command /f /ve /d "cmd /x /d /r set \"f0=%%2\"& call \"%%2\" %%3"& set _= %*
 >nul fltmc|| if "%f0%" neq "%~f0" (cd.>"%temp%\runas.Admin" & start "%~n0" /high "%temp%\runas.Admin" "%~f0" "%_:"=""%" & exit /b)
 title Debloat - A bloatware removal tool made in batch by Cramaboule
+
+Set noreboot=%1
 
 cls & echo ======================
 echo Remove dirt in Start Menu and do some tweaks
@@ -33,6 +35,8 @@ reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "Tas
 reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "ShowTaskViewButton" /t REG_DWORD /d 0 /f 2> nul
 reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Search /v "SearchboxTaskbarMode" /t REG_DWORD /d 0 /f 2> nul
 reg add HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32 /ve /d "" /f 2> nul
+reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows" /v "LegacyDefaultPrinterMode" /t REG_DWORD /d 1 /f 2> nul
+
 :: Make you own start2.bin if you wish as explain here: https://superuser.com/a/1690893/996827
 xcopy "%~dp0start2.bin" "C:\Users\Default\AppData\Local\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\" /y 2> nul
 xcopy "%~dp0start2.bin" "%LocalAppData%\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\" /y 2> nul
@@ -48,11 +52,11 @@ echo ======================
 echo Install winget
 echo ====================== & echo.
 
-::installing dependies and Winget
-:: check if Winget is already installed
+rem installing dependies and Winget
+rem check if Winget is already installed
 winget -v 2> nul
 IF %ERRORLEVEL% NEQ 0 (
-	powershell -command "$ProgressPreference = 'SilentlyContinue' ; write-host "Downloading and Installing dependies" ; Invoke-WebRequest -Uri  https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile .\Microsoft.VCLibs.x64.14.00.Desktop.appx ; Invoke-WebRequest -Uri  https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile .\microsoft.ui.xaml.2.7.3.nupkg.zip ; Expand-Archive -Path .\microsoft.ui.xaml.2.7.3.nupkg.zip -Force ; Add-AppXPackage -Path .\microsoft.ui.xaml.2.7.3.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx; Add-AppXPackage -Path .\Microsoft.VCLibs.x64.14.00.Desktop.appx ; write-host "Installing Winget" ;  Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.7.11132/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle ; Add-AppXPackage -Path .\MicrosoftDesktopAppInstaller_8wekyb3d8bbwe.msixbundle" 2> nul
+	call :InstallWinget
 )
 
 cls & echo ======================
@@ -67,6 +71,8 @@ reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v
 reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "PreInstalledAppsEverEnabled" /t REG_DWORD /d 1 /f 2> nul
 reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "SilentInstalledAppsEnabled" /t REG_DWORD /d 1 /f 2> nul
 reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "SystemPaneSuggestionsEnabled" /t REG_DWORD /d 1 /f 2> nul
+REG DELETE HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\DevHomeUpdate /VA /F
+REG DELETE HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\OutlookUpdate /VA /F
 
 echo OneDrive
 TASKKILL /f /im OneDrive.exe 2>nul
@@ -80,157 +86,154 @@ echo ====================== & echo.
 winget -v
 echo.
 ::Cortana
-winget uninstall cortana --accept-source-agreements --silent
+call :WingetUninstall cortana Cortana
 
 ::Skype
-winget uninstall skype --accept-source-agreements --silent
+call :WingetUninstall skype Skype
 
 ::Camera
-winget uninstall Microsoft.WindowsCamera_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.WindowsCamera_8wekyb3d8bbwe Camera
 
 ::Sketch
-::winget uninstall Microsoft.ScreenSketch_8wekyb3d8bbwe --accept-source-agreements --silent
+::call :WingetUninstall Microsoft.ScreenSketch_8wekyb3d8bbwe Sketch
 
 ::Xbox Applications
-winget uninstall Microsoft.GamingApp_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.XboxApp_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.Xbox.TCUI_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.XboxSpeechToTextOverlay_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.XboxIdentityProvider_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.XboxGamingOverlay_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.XboxGameOverlay_8wekyb3d8bbwe --accept-source-agreements --silent
-
+call :WingetUninstall Microsoft.GamingApp_8wekyb3d8bbwe Xbox_1/7
+call :WingetUninstall Microsoft.XboxApp_8wekyb3d8bbwe Xbox_2/7
+call :WingetUninstall Microsoft.Xbox.TCUI_8wekyb3d8bbwe Xbox_3/7
+call :WingetUninstall Microsoft.XboxSpeechToTextOverlay_8wekyb3d8bbwe Xbox_4/7
+call :WingetUninstall Microsoft.XboxIdentityProvider_8wekyb3d8bbwe Xbox_5/7
+call :WingetUninstall Microsoft.XboxGamingOverlay_8wekyb3d8bbwe Xbox_6/7
+call :WingetUninstall Microsoft.XboxGameOverlay_8wekyb3d8bbwe Xbox_7/7
 ::Groove Music
-winget uninstall Microsoft.ZuneMusic_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.ZuneMusic_8wekyb3d8bbwe Groove_Music
 
 ::Feedback Hub
-winget uninstall Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe Feedback Hub
 
-::Microsoft-Tips...
-winget uninstall Microsoft.Getstarted_8wekyb3d8bbwe --accept-source-agreements --silent
+::Microsoft-Tips
+call :WingetUninstall Microsoft.Getstarted_8wekyb3d8bbwe Microsoft-Tips
 
-::3D Viewer
-winget uninstall 9NBLGGH42THS --accept-source-agreements --silent
+:: 3D Viewer
+call :WingetUninstall 9NBLGGH42THS 3D_Viewer
 
 :: 3D Builder
-winget uninstall Microsoft.3DBuilder_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.3DBuilder_8wekyb3d8bbwe 3D_Builder
 
-::MS Solitaire
-winget uninstall Microsoft.MicrosoftSolitaireCollection_8wekyb3d8bbwe --accept-source-agreements --silent
+:: MS Solitaire
+call :WingetUninstall Microsoft.MicrosoftSolitaireCollection_8wekyb3d8bbwe MS_Solitaire
 
-::Paint-3D
-winget uninstall 9NBLGGH5FV99 --accept-source-agreements --silent
+:: Paint-3D
+call :WingetUninstall 9NBLGGH5FV99 Paint-3D
 
-::Weather 
-winget uninstall Microsoft.BingWeather_8wekyb3d8bbwe --accept-source-agreements --silent
+:: Weather 
+call :WingetUninstall Microsoft.BingWeather_8wekyb3d8bbwe Weather 
 
-::Mail / Calendar
-winget uninstall microsoft.windowscommunicationsapps_8wekyb3d8bbwe --accept-source-agreements --silent
+:: Mail / Calendar
+call :WingetUninstall microsoft.windowscommunicationsapps_8wekyb3d8bbwe Mail/Calendar
 
 ::Your Phone
-winget uninstall Microsoft.YourPhone_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.YourPhone_8wekyb3d8bbwe Phone
 
 ::People
-winget uninstall Microsoft.People_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.People_8wekyb3d8bbwe People
 
 ::MS Pay 
-winget uninstall Microsoft.Wallet_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.Wallet_8wekyb3d8bbwe MS_Pay 
 
 ::MS Maps
-winget uninstall Microsoft.WindowsMaps_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.WindowsMaps_8wekyb3d8bbwe MS_Maps
 
 ::OneNote
-winget uninstall Microsoft.Office.OneNote_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.Office.OneNote_8wekyb3d8bbwe OneNote
 
 ::MS Office
-winget uninstall Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe MS_Office
 
 ::Voice Recorder
-winget uninstall Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe Voice_Recorder
 
 ::Movies & TV
-winget uninstall Microsoft.ZuneVideo_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.ZuneVideo_8wekyb3d8bbwe MoviesTV
 
 ::Mixed Reality-Portal
-winget uninstall Microsoft.MixedReality.Portal_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.MixedReality.Portal_8wekyb3d8bbwe Mixed_Reality-Portal
 
 ::Sticky Notes...
-winget uninstall Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe Sticky_Notes
 
 ::Get Help
-winget uninstall Microsoft.GetHelp_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.GetHelp_8wekyb3d8bbwe Get_Help
 
 ::OneDrive
-winget uninstall Microsoft.OneDrive --accept-source-agreements --silent
+call :WingetUninstall Microsoft.OneDrive OneDrive
 
 ::Calculator
-:: winget uninstall Microsoft.WindowsCalculator_8wekyb3d8bbwe --accept-source-agreements --silent
+:: call :WingetUninstall Microsoft.WindowsCalculator_8wekyb3d8bbwe Calculator
 
 ::Outlook for Microsoft
-winget uninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe Outlook_for_Microsoft
 
 
 ::Windows 11 Bloatware
 :: Different games
-winget uninstall 26720RandomSaladGamesLLC.3899848563C1F_kx24dqmazqk8j --accept-source-agreements --silent
-winget uninstall 26720RandomSaladGamesLLC.Spades_kx24dqmazqk8j --accept-source-agreements --silent
-winget uninstall Google.PlayGames.Beta --accept-source-agreements --silent
-winget uninstall AD2F1837.OMENCommandCenter_v10z8vjag6ke6 --accept-source-agreements --silent
-:: Outlook for Windows
-winget uninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall 26720RandomSaladGamesLLC.3899848563C1F_kx24dqmazqk8j Games1
+call :WingetUninstall 26720RandomSaladGamesLLC.Spades_kx24dqmazqk8j Games2
+call :WingetUninstall Google.PlayGames.Beta Games3
+call :WingetUninstall AD2F1837.OMENCommandCenter_v10z8vjag6ke6 Games4
 :: Messages opérateur Windows
-winget uninstall Microsoft.Messaging_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.Messaging_8wekyb3d8bbwe MessagesoperatorWindows
 :: print 3D
-winget uninstall Microsoft.Print3D_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.Print3D_8wekyb3d8bbwe print_3D
 :: One Connect
-winget uninstall Microsoft.OneConnect_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.OneConnect_8wekyb3d8bbwe One_Connect
 ::Microsoft TO Do
-winget uninstall Microsoft.Todos_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.Todos_8wekyb3d8bbwe Microsoft_TO_Do
 ::Power Automate
-winget uninstall Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe Power_Automate
 ::Bing News
-winget uninstall Microsoft.BingNews_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.BingNews_8wekyb3d8bbwe Bing_News
 ::Microsoft Teams
-winget uninstall MicrosoftTeams_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall MicrosoftTeams_8wekyb3d8bbwe Microsoft_Teams
 ::Microsoft Family
-winget uninstall MicrosoftCorporationII.MicrosoftFamily_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall MicrosoftCorporationII.MicrosoftFamily_8wekyb3d8bbwe Microsoft_Family
 ::Quick Assist
-winget uninstall MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe --accept-source-agreements --silent
-::Power Automate
-winget uninstall Microsoft.DevHome --accept-source-agreements --silent
+call :WingetUninstall MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe Quick _Assist
+::Dev Home
+call :WingetUninstall Microsoft.DevHome Dev_Home
 ::Microsoft Whiteboard
-winget uninstall Microsoft.Whiteboard_8wekyb3d8bbwe --accept-source-agreements --silent
+call :WingetUninstall Microsoft.Whiteboard_8wekyb3d8bbwe Microsoft_Whiteboard
 ::Third-Party Preinstalled bloat
 :: Disney+
-winget uninstall disney+ --accept-source-agreements --silent
+call :WingetUninstall disney+ Disney+
 :: LinkedIn
-winget uninstall 7EE7776C.LinkedInforWindows_w1wdnht996qgy --accept-source-agreements --silent
+call :WingetUninstall 7EE7776C.LinkedInforWindows_w1wdnht996qgy LinkedIn
 :: Camo Studio
-winget uninstall ReincubateLtd.CamoStudio_9bq3v28c93p4r --accept-source-agreements --silent
+call :WingetUninstall ReincubateLtd.CamoStudio_9bq3v28c93p4r Camo_Studio
 ::Dropbox - offre promotionnelle
-winget uninstall C27EB4BA.DropboxOEM_xbfy0k16fey96 --accept-source-agreements --silent
+call :WingetUninstall C27EB4BA.DropboxOEM_xbfy0k16fey96 Dropbox
 ::Clipchamp
-winget uninstall Clipchamp.Clipchamp_yxz26nhyzhsrt --accept-source-agreements --silent
+call :WingetUninstall Clipchamp.Clipchamp_yxz26nhyzhsrt Clipchamp
 ::WhatsApp
-winget uninstall 5319275A.WhatsAppDesktop_cv1g1gvanyjgm --accept-source-agreements --silent
+call :WingetUninstall 5319275A.WhatsAppDesktop_cv1g1gvanyjgm WhatsApp
 ::Spotify Music
-winget uninstall SpotifyAB.SpotifyMusic_zpdnekdrzrea0 --accept-source-agreements --silent
+call :WingetUninstall SpotifyAB.SpotifyMusic_zpdnekdrzrea0 Spotify_Music
 ::Microsoft Store
-::winget uninstall Microsoft.WindowsStore_8wekyb3d8bbwe --accept-source-agreements --silent
+::call :WingetUninstall Microsoft.WindowsStore_8wekyb3d8bbwe Microsoft_Store
 :: Other stuff
-::winget uninstall Microsoft.HEVCVideoExtension_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.LanguageExperiencePackfr-FR_8wekyb3d8bbwe --accept-source-agreements --silent
-::winget uninstall Microsoft.RawImageExtension_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.StorePurchaseApp_8wekyb3d8bbwe --accept-source-agreements --silent
-::winget uninstall Microsoft.VP9VideoExtensions_8wekyb3d8bbwe --accept-source-agreements --silent
-::winget uninstall Microsoft.WebMediaExtensions_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.WindowsAlarms_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall Microsoft.WindowsCamera_8wekyb3d8bbwe --accept-source-agreements --silent
-winget uninstall MicrosoftWindows.Client.WebExperiencecw5n1h2txyewy --accept-source-agreements --silent
+::call :WingetUninstall Microsoft.HEVCVideoExtension_8wekyb3d8bbwe HEVCVideoExtension
+call :WingetUninstall Microsoft.LanguageExperiencePackfr-FR_8wekyb3d8bbwe LanguageExperiencePackfr-FR
+::call :WingetUninstall Microsoft.RawImageExtension_8wekyb3d8bbwe RawImageExtension
+call :WingetUninstall Microsoft.StorePurchaseApp_8wekyb3d8bbwe StorePurchaseApp
+::call :WingetUninstall Microsoft.VP9VideoExtensions_8wekyb3d8bbwe VP9VideoExtensions
+::call :WingetUninstall Microsoft.WebMediaExtensions_8wekyb3d8bbwe WebMediaExtensions
+call :WingetUninstall Microsoft.WindowsAlarms_8wekyb3d8bbwe Windows_Alarms
+call :WingetUninstall Microsoft.WindowsCamera_8wekyb3d8bbwe Windows_Camera
+call :WingetUninstall MicrosoftWindows.Client.WebExperiencecw5n1h2txyewy Web_Experience
 :: PC Health tool
-winget uninstall {6A2A8076-135F-4F55-BB02-DED67C8C6934} --accept-source-agreements --silent
+call :WingetUninstall {6A2A8076-135F-4F55-BB02-DED67C8C6934} PC_Health_tool
 :: Microsoft Update Health Tool
-winget uninstall {80F1AF52-7AC0-42A3-9AF0-689BFB271D1D} --accept-source-agreements --silent
+call :WingetUninstall {80F1AF52-7AC0-42A3-9AF0-689BFB271D1D} Microsoft_Update_Health_Tool
 
 :: Sometimes it is not installed
 ::reinstall Windows Store
@@ -245,12 +248,34 @@ winget install --id 9WZDNCRFHVN5 --accept-source-agreements --silent --accept-pa
 winget install --id 9WZDNCRFJBH4 --accept-source-agreements --silent --accept-package-agreements
 ::Notepad
 winget install --id 9MSMLRH6LZF3 --accept-source-agreements --silent --accept-package-agreements
+:: Upgrade All
+winget upgrade --all
 
+IF /I NOT [%noreboot%] EQU [noreboot] (
+	cls
+	CHOICE /c YN /M "Do you want to reboot now"
+	IF %ERRORLEVEL% == 1 (shutdown -r -f -t 00)
+	cls & echo Done. Thank you for using this tool. ==== Reboot is recommended ====& echo. 
+	pause
+)
 
-cls
-CHOICE /c YN /M "Do you want to reboot now"
-if %ERRORLEVEL% == 1 (shutdown -r -f -t 00)
+exit 0
+exit /B
 
-cls & echo Done. Thank you for using this tool. ==== Reboot is recommended ====& echo. 
-pause
-exit
+:InstallWinget
+powershell -command $ProgressPreference = 'SilentlyContinue' ; ^
+	write-host 'Downloading Winget and dependies' ; ^
+	(New-Object System.Net.WebClient).DownloadFile('https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx', 'Microsoft.VCLibs.x64.14.00.Desktop.appx') ; ^
+	(New-Object System.Net.WebClient).DownloadFile('https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3', 'microsoft.ui.xaml.2.7.3.nupkg.zip') ; ^
+	(New-Object System.Net.WebClient).DownloadFile('https://github.com/microsoft/winget-cli/releases/download/v1.7.11132/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle', 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle') ; ^
+	write-host 'Installing Winget and dependies' ; ^
+	Expand-Archive -Path '.\microsoft.ui.xaml.2.7.3.nupkg.zip' -Force ; ^
+	Add-AppXPackage -Path '.\microsoft.ui.xaml.2.7.3.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx' ; ^
+	Add-AppXPackage -Path '.\Microsoft.VCLibs.x64.14.00.Desktop.appx' ; ^
+	Add-AppXPackage -Path '.\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle' 2> nul
+exit /B
+
+:WingetUninstall
+Echo Uninstall %2
+winget uninstall %1 --accept-source-agreements --silent --force --purge >nul 2>&1
+exit /B
