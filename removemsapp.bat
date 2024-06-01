@@ -283,10 +283,10 @@ Echo Uninstall %2
 winget uninstall %1 --accept-source-agreements --silent --force --purge >nul 2>&1
 exit /B
 
-this is the start2.bin file. make your own if you wish as explained here: https://superuser.com/a/1690893/996827
-
-decode this with: certutil -decode %0 start2.bin
-to encode others: certutil -encode start2.bin start2.txt
+:: this is the start2.bin file.
+:: make your own if you wish as explained here: https://superuser.com/a/1690893/996827
+:: to encode a file: certutil -encode start2.bin start2.txt
+:: to decode it: certutil -decode start2.txt start2.bin
 
 -----BEGIN CERTIFICATE-----
 4nrhSwH8TRucAIEL3m5RhU5aX0cAW7FJilySr5CE+V7qQEwD8QDaAfAeAABc9u55
