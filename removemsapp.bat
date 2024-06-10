@@ -57,8 +57,11 @@ echo ====================== & echo.
 
 rem installing dependies and Winget
 rem check if Winget is already installed
-winget -v 2> nul
-IF %ERRORLEVEL% NEQ 0 (
+FOR /F %%g IN ('winget -v') do (SET version=%%g)
+echo %version%
+SET "result=%version:~1%"
+SET minwingetversion=1.7
+if %result% LEQ %minwingetversion% (
 	call :InstallWinget
 )
 
@@ -270,7 +273,7 @@ powershell -command $ProgressPreference = 'SilentlyContinue' ; ^
 	write-host 'Downloading Winget and dependies' ; ^
 	(New-Object System.Net.WebClient).DownloadFile('https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx', 'Microsoft.VCLibs.x64.14.00.Desktop.appx') ; ^
 	(New-Object System.Net.WebClient).DownloadFile('https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3', 'microsoft.ui.xaml.2.7.3.nupkg.zip') ; ^
-	(New-Object System.Net.WebClient).DownloadFile('https://github.com/microsoft/winget-cli/releases/download/v1.7.11132/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle', 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle') ; ^
+	(New-Object System.Net.WebClient).DownloadFile('https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle', 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle') ; ^
 	write-host 'Installing Winget and dependies' ; ^
 	Expand-Archive -Path '.\microsoft.ui.xaml.2.7.3.nupkg.zip' -Force ; ^
 	Add-AppXPackage -Path '.\microsoft.ui.xaml.2.7.3.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx' ; ^
