@@ -1,5 +1,5 @@
 @echo off
-:: V1.11
+:: V1.12
 
 
 ::# elevate with native shell by AveYo
@@ -18,6 +18,8 @@ REG add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v 
 REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "HideFileExt" /t REG_DWORD /d 0 /f 2> nul
 :: Enable Get Latest Updates as soon as available
 REG add HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings /v "IsContinuousInnovationOptedIn" /t REG_DWORD /d 1 /f 2> nul
+:: Enable Num Lock
+REG add "HKU\.DEFAULT\Control Panel\Keyboard" /v "InitialKeyboardIndicators" /t REG_SZ /d 2 /f 2> nul
 :: do not put screen and pc to sleep
 powercfg /change monitor-timeout-ac 0 2> nul
 powercfg /change monitor-timeout-dc 0 2> nul
