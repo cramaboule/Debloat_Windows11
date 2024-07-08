@@ -1,5 +1,5 @@
 @echo off
-:: V1.12
+:: V1.13
 
 
 ::# elevate with native shell by AveYo
@@ -20,6 +20,8 @@ REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "Hid
 REG add HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings /v "IsContinuousInnovationOptedIn" /t REG_DWORD /d 1 /f 2> nul
 :: Enable Num Lock
 REG add "HKU\.DEFAULT\Control Panel\Keyboard" /v "InitialKeyboardIndicators" /t REG_SZ /d 2 /f 2> nul
+:: Disable password expire
+wmic UserAccount set PasswordExpires=False
 :: do not put screen and pc to sleep
 powercfg /change monitor-timeout-ac 0 2> nul
 powercfg /change monitor-timeout-dc 0 2> nul
