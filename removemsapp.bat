@@ -1,5 +1,5 @@
 @echo off
-:: V1.13
+:: V1.14
 
 
 ::# elevate with native shell by AveYo
@@ -18,6 +18,8 @@ REG add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v 
 REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "HideFileExt" /t REG_DWORD /d 0 /f 2> nul
 :: Enable Get Latest Updates as soon as available
 REG add HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings /v "IsContinuousInnovationOptedIn" /t REG_DWORD /d 1 /f 2> nul
+:: Enable End Task on Taskbar
+reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings /v TaskbarEndTask /t REG_DWORD /d 1 /f
 :: Enable Num Lock
 REG add "HKU\.DEFAULT\Control Panel\Keyboard" /v "InitialKeyboardIndicators" /t REG_SZ /d 2 /f 2> nul
 :: Disable password expire
