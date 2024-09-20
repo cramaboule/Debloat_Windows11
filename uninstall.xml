@@ -1,0 +1,8 @@
+<Configuration>
+    <Remove All="TRUE"/>
+    <Display Level="None" AcceptEULA="TRUE"/>
+    <Property Name="AUTOACTIVATE" Value="0"/>
+    <Property Name="FORCEAPPSHUTDOWN" Value="TRUE"/>
+    <Property Name="SharedComputerLicensing" Value="0"/>
+    <Property Name="PinIconsToTaskbar" Value="FALSE"/>
+</Configuration>
