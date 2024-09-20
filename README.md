@@ -8,6 +8,10 @@ Tested on :
 - Windows 11 23H2, Family and Pro
 
 In order to make your own Sart Menu as you wish, make you own start2.bin as explain here: https://superuser.com/a/1690893/996827. Mine is like on the picture (Explorer and parameters).
+Remove Pre installed Office 365 with:
+Setup.exe is part of officedeploymenttool_17830-20162.exe
+(https://www.microsoft.com/en-us/download/details.aspx?id=49117)
+
 
 A reboot is really recommanded at the end of the process in order to remove everything.
 
