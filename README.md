@@ -15,6 +15,7 @@ Remove Pre installed Office 365 with:
 A reboot is really recommanded at the end of the process in order to remove everything.
 
 Enjoy!
+
 USE AT YOUR OWN RISK !
 
 Before:
