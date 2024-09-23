@@ -1,5 +1,7 @@
 @echo off
-:: V1.15
+:: V1.16
+
+:: Release under the GNU GPL V3
 
 
 ::# elevate with native shell by AveYo
