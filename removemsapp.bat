@@ -191,6 +191,8 @@ call :WingetUninstall Microsoft.OneDrive OneDrive
 ::Outlook for Microsoft
 call :WingetUninstall Microsoft.OutlookForWindows_8wekyb3d8bbwe Outlook_for_Microsoft
 
+::copilot
+call :WingetUninstall Microsoft.Copilot_8wekyb3d8bbwe Copilot
 
 ::Windows 11 Bloatware
 :: Different games
