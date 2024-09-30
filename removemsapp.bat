@@ -1,5 +1,5 @@
 @echo off
-:: V1.17
+:: V1.18
 
 :: Release under the GNU GPL V3
 
