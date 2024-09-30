@@ -25,7 +25,7 @@ REG add "HKU\.DEFAULT\Control Panel\Keyboard" /v "InitialKeyboardIndicators" /t 
 :: Enable End Task on Taskbar
 reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings /v TaskbarEndTask /t REG_DWORD /d 1 /f
 :: Disable password expire
-wmic UserAccount set PasswordExpires=False
+net accounts /maxpwage:unlimited
 :: do not put screen and pc to sleep
 powercfg /change monitor-timeout-ac 0 2> nul
 powercfg /change monitor-timeout-dc 0 2> nul
