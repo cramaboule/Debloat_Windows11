@@ -7,6 +7,9 @@ Tested on :
 - Windows 11 22H2, Family and Pro
 - Windows 11 23H2, Family and Pro
 
+**NEW :**
+- **Windows 11 24H2, Family and Pro**
+
 In order to make your own Sart Menu as you wish, make you own start2.bin as explain here: https://superuser.com/a/1690893/996827. Mine is like on the picture (Explorer and parameters).
 
 Remove Pre installed Office 365 with:
