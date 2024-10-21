@@ -1,10 +1,11 @@
 @echo off
-:: V1.18
+:: V1.19
 
 :: Release under the GNU GPL V3
 
+setlocal EnableDelayedExpansion
 
-::# elevate with native shell by AveYo
+::# self elevate with native shell by AveYo
 >nul reg add hkcu\software\classes\.Admin\shell\runas\command /f /ve /d "cmd /x /d /r set \"f0=%%2\"& call \"%%2\" %%3"& set _= %*
 >nul fltmc|| if "%f0%" neq "%~f0" (cd.>"%temp%\runas.Admin" & start "%~n0" /high "%temp%\runas.Admin" "%~f0" "%_:"=""%" & exit /b)
 title Debloat - A bloatware removal tool made in batch by Cramaboule
@@ -94,8 +95,24 @@ TASKKILL /f /im OneDrive.exe 2>nul
 %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall 2> nul
 powershell -command "(\"Microsoft.549981C3F5F10\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.Todos\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.WindowsTerminal\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like $_ | Remove-AppxProvisionedPackage -online}" 2> nul
 
+:: Remove Outlook For Windows by https://github.com/matej137/OutlookRemover
+Echo Removing New Outlook For Windows
+mkdir %appdata%\NewOutlook
+if %PROCESSOR_ARCHITECTURE%==AMD64 copy "%~dp0AppxManifest.xml" %appdata%\NewOutlook
+if %PROCESSOR_ARCHITECTURE%==x86 copy "%~dp0AppxManifestx86.xml" %appdata%\NewOutlook\AppxManifest.xml
+if %PROCESSOR_ARCHITECTURE%==ARM64 copy "%~dp0AppxManifest-ARM64.xml" %appdata%\NewOutlook\AppxManifest.xml
+powershell "New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -PropertyType DWORD -Value 1 -Force" >NUL 2>NUL
+echo Uninstalling the original version (reffer to readme for errors/red text)
+powershell "get-appxpackage -allusers Microsoft.OutlookForWindows | Remove-AppxPackage -allusers"
+echo installing the patched one (Errors are bad now)
+powershell add-appxpackage -register "%appdata%\NewOutlook\AppxManifest.xml"
+echo done !
+
 :: Remove Office 365 Preinstalled. Setup.exe is part of officedeploymenttool_17830-20162.exe
-start /Wait %~dp0setup.exe /configure %~dp0uninstall.xml
+Echo Removing Office 365 Preinstalled
+start /Wait "" /b "%~dp0setup.exe" /configure "%~dp0uninstall.xml"
+echo done !
+ping 127.0.0.1 -n 3 >nul 2>&1
 
 cls & echo ======================
 echo Remove packages segond stage. Please Wait...
@@ -207,7 +224,7 @@ call :WingetUninstall Microsoft.Print3D_8wekyb3d8bbwe print_3D
 :: One Connect
 call :WingetUninstall Microsoft.OneConnect_8wekyb3d8bbwe One_Connect
 ::Microsoft TO Do
-call :WingetUninstall Microsoft.Todos_8wekyb3d8bbwe Microsoft_TO_Do
+call :WingetUninstall Microsoft.Todos_8wekyb3d8bbwe Microsoft_to_Do
 ::Power Automate
 call :WingetUninstall Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe Power_Automate
 ::Bing News
@@ -273,7 +290,7 @@ winget install --id 9MSMLRH6LZF3 --accept-source-agreements --silent --accept-pa
 IF /I NOT [%noreboot%] EQU [noreboot] (
 	cls
 	CHOICE /c YN /M "Do you want to reboot now"
-	IF %ERRORLEVEL% == 1 (shutdown -r -f -t 00)
+	IF !ERRORLEVEL! == 1 (shutdown -r -f -t 00)
 	cls & echo Done. Thank you for using this tool. ==== Reboot is recommended ====& echo. 
 	pause
 )
