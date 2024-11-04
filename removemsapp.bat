@@ -1,5 +1,5 @@
 @echo off
-:: V1.19
+:: V1.20
 
 :: Release under the GNU GPL V3
 
