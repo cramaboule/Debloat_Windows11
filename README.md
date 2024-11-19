@@ -1,4 +1,4 @@
-# Debloat_Windows11
+# Debloat Windows11
 ## Debloat Windows 11: Remove unnecessary Windows 11 apps
 
 Run the .bat file, and let the magic happens.
@@ -33,3 +33,8 @@ After:
 
 ![image](https://github.com/cramaboule/Debloat_Windows11/assets/21193662/457075f2-f66d-4b56-9b4c-37af7681545f)
 
+## Contributors:
+
+<a href="https://github.com/cramaboule/Debloat_Windows11/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=cramaboule/Debloat_Windows11" />
+</a>
