@@ -21,6 +21,8 @@ A reboot is really recommanded at the end of the process in order to remove ever
 
 Enjoy!
 
+If you like it please make a :star:
+
 USE AT YOUR OWN RISK !
 
 Before:
