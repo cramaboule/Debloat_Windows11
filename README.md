@@ -1,7 +1,7 @@
 # Debloat Windows11
 ## Debloat Windows 11: Remove unnecessary Windows 11 apps
 
-Run the .bat file, and let the magic happens.
+Run the .bat file, drink a ☕ and let the magic happens. 
 
 **NEW :**
 - **Windows 11 24H2, Family and Pro**
