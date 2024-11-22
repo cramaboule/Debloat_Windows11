@@ -35,6 +35,9 @@ After:
 
 ![image](https://github.com/cramaboule/Debloat_Windows11/assets/21193662/457075f2-f66d-4b56-9b4c-37af7681545f)
 
+See it on video:
+https://www.youtube.com/watch?v=iCEmyee2-1k
+
 ## Contributors:
 
 <a href="https://github.com/cramaboule/Debloat_Windows11/graphs/contributors">
