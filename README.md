@@ -25,8 +25,7 @@ If you like it please make a :star:
 
 USE AT YOUR OWN RISK !
 
-![RemoveMsApp-final-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/72e60f79-54bf-4279-9cdc-540fc8a58cb0)
-
+![RemoveMS-app-gif-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/172f2295-7625-4ef5-9c69-012a13643b34)
 
 Before:
 
