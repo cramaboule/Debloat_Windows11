@@ -1,5 +1,5 @@
 @echo off
-:: V1.20
+:: V1.21
 
 :: Release under the GNU GPL V3
 
@@ -10,7 +10,28 @@ setlocal EnableDelayedExpansion
 >nul fltmc|| if "%f0%" neq "%~f0" (cd.>"%temp%\runas.Admin" & start "%~n0" /high "%temp%\runas.Admin" "%~f0" "%_:"=""%" & exit /b)
 title Debloat - A bloatware removal tool made in batch by Cramaboule
 
-Set noreboot=%1
+Set param1=%1
+Set param2=%2
+Set Temp2=0
+Set Temp1=0
+
+IF /I [%param1%] EQU [noreboot] Set "Temp2=1"
+IF /I [%param2%] EQU [noreboot] Set "Temp2=1"
+
+IF /I [%param1%] EQU [restarted] Set "Temp1=1"
+IF /I [%param2%] EQU [restarted] Set "Temp1=1"
+
+IF %Temp1% NEQ 1 (
+	echo uninstall Terminal
+	powershell -command "Get-AppxPackage -AllUsers -Name Microsoft.WindowsTerminal | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like Microsoft.WindowsTerminal | Remove-AppxProvisionedPackage -online" 2> nul
+	IF %Temp2% EQU 1 (
+	start %~f0 restarted noreboot
+	exit
+	) ELSE (
+	start %~f0 restarted
+	exit
+	)
+)
 
 cls & echo ======================
 echo Remove dirt in Start Menu and do some tweaks
@@ -93,7 +114,7 @@ echo OneDrive
 TASKKILL /f /im OneDrive.exe 2>nul
 %systemroot%\System32\OneDriveSetup.exe /uninstall 2> nul
 %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall 2> nul
-powershell -command "(\"Microsoft.549981C3F5F10\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.Todos\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.WindowsTerminal\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like $_ | Remove-AppxProvisionedPackage -online}" 2> nul
+powershell -command "(\"Microsoft.549981C3F5F10\",\"MSTeams\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.Todos\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like $_ | Remove-AppxProvisionedPackage -online}" 2> nul
 
 :: Remove Outlook For Windows by https://github.com/matej137/OutlookRemover
 Echo Removing New Outlook For Windows
@@ -287,7 +308,7 @@ winget install --id 9MSMLRH6LZF3 --accept-source-agreements --silent --accept-pa
 :: Upgrade All
 ::winget upgrade --all
 
-IF /I NOT [%noreboot%] EQU [noreboot] (
+IF %Temp2% NEQ 1 (
 	cls
 	CHOICE /c YN /M "Do you want to reboot now"
 	IF !ERRORLEVEL! == 1 (shutdown -r -f -t 00)
