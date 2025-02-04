@@ -35,7 +35,8 @@ Before:
 
 After:
 
-![image](https://github.com/cramaboule/Debloat_Windows11/assets/21193662/457075f2-f66d-4b56-9b4c-37af7681545f)
+![image](https://github.com/user-attachments/assets/a21be668-55e5-4ede-8d67-cd3b682694dd)
+
 
 See it on video:
 https://www.youtube.com/watch?v=iCEmyee2-1k
