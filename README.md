@@ -35,7 +35,8 @@ Before:
 
 After:
 
-![image](https://github.com/user-attachments/assets/a21be668-55e5-4ede-8d67-cd3b682694dd)
+![image](https://github.com/user-attachments/assets/b00fe7f4-0d74-4419-b43c-b54ab6b68258)
+
 
 
 See it on video:
