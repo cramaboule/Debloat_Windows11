@@ -3,10 +3,8 @@
 
 Run the .bat file, drink a ☕ and let the :magic_wand: (magic) happens. 
 
-**NEW :**
-- **Windows 11 24H2, Family and Pro**
-
 Tested on :
+- Windows 11 24H2, Family and Pro
 - Windows 11 23H2, Family and Pro
 - Windows 11 22H2, Family and Pro
 
