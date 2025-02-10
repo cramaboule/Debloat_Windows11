@@ -1,5 +1,5 @@
 @echo off
-:: V1.22
+:: V1.23
 
 :: Release under the GNU GPL V3
 
@@ -38,7 +38,11 @@ cls & echo ======================
 echo Remove dirt in Start Menu and do some tweaks
 echo ====================== & echo.
 for /f %%a in ('REG QUERY HKCU\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount /s /k /f placeholdertilecollection') do (reg delete %%a\current /VA /F 2> nul)
+:: Disable Get Even More Out of Windows
 REG add HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /v "ScoobeSystemSettingEnabled" /t REG_DWORD /d 0 /f 2> nul
+:: Disable bitlocker
+REG add HKLM\SOFTWARE\Policies\Microsoft\Windows\EnhancedStorageDevices /v "TCGSecurityActivationDisabled" /t REG_DWORD /d 1 /f 2> nul
+REG add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\BitLocker /v "PreventDeviceEncryption" /t REG_DWORD /d 1 /f 2> nul
 :: Show file extensions
 REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v "HideFileExt" /t REG_DWORD /d 0 /f 2> nul
 :: Enable Get Latest Updates as soon as available
