@@ -40,6 +40,8 @@ After:
 See it on video:
 https://www.youtube.com/watch?v=iCEmyee2-1k
 
+I have been mentioned here: https://github.com/MarcoRavich/Opendows/blob/main/Tweakers.md
+
 ## Contributors:
 
 <a href="https://github.com/cramaboule/Debloat_Windows11/graphs/contributors">
