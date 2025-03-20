@@ -1,5 +1,5 @@
 @echo off
-:: V1.23
+:: V1.24
 
 :: Release under the GNU GPL V3
 
@@ -15,17 +15,18 @@ Set param2=%2
 Set Temp2=0
 Set Temp1=0
 
-IF /I [%param1%] EQU [noreboot] Set "Temp2=1"
-IF /I [%param2%] EQU [noreboot] Set "Temp2=1"
+IF /I [%param1%] == [noreboot] Set "Temp2=1"
+IF /I [%param2%] == [noreboot] Set "Temp2=1"
+IF /I [%param1%] == [restarted] Set "Temp1=1"
+IF /I [%param2%] == [restarted] Set "Temp1=1"
 
-IF /I [%param1%] EQU [restarted] Set "Temp1=1"
-IF /I [%param2%] EQU [restarted] Set "Temp1=1"
 
 cd "%~dp0"
-IF %Temp1% NEQ 1 (
-	echo uninstall Terminal
-	powershell -command "Get-AppxPackage -AllUsers -Name Microsoft.WindowsTerminal | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like Microsoft.WindowsTerminal | Remove-AppxProvisionedPackage -online" 2> nul
-	IF %Temp2% EQU 1 (
+IF %Temp1% == 0 (
+	echo Setup Windows Console
+	REG add HKEY_CURRENT_USER\Console\%%%%Startup /v "DelegationConsole" /t REG_SZ /d {B23D10C0-E52E-411E-9D5B-C09FDF709C7D} /f 2> nul
+	REG add HKEY_CURRENT_USER\Console\%%%%Startup /v "DelegationTerminal" /t REG_SZ /d {B23D10C0-E52E-411E-9D5B-C09FDF709C7D} /f 2> nul	
+	IF %Temp2% == 1 (
 	start %~nx0 restarted noreboot
 	exit
 	) ELSE (
@@ -95,7 +96,7 @@ rem check if Winget is already installed
 FOR /F %%g IN ('winget -v') do (SET version=%%g)
 echo %version%
 SET "result=%version:~1%"
-SET minwingetversion=1.7
+SET minwingetversion=1.9
 if %result% LEQ %minwingetversion% (
 	call :InstallWinget
 )
@@ -119,7 +120,7 @@ echo OneDrive
 TASKKILL /f /im OneDrive.exe 2>nul
 %systemroot%\System32\OneDriveSetup.exe /uninstall 2> nul
 %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall 2> nul
-powershell -command "(\"Microsoft.549981C3F5F10\", \"MSTeams\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.Todos\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like $_ | Remove-AppxProvisionedPackage -online}" 2> nul
+powershell -command "(\"Microsoft.549981C3F5F10\", \"MSTeams\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.WindowsTerminal\", \"Microsoft.Todos\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like $_ | Remove-AppxProvisionedPackage -online}" 2> nul
 
 :: Remove Outlook For Windows by https://github.com/matej137/OutlookRemover
 Echo Removing New Outlook For Windows
