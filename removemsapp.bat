@@ -1,5 +1,5 @@
 @echo off
-:: V1.24
+:: V1.25
 
 :: Release under the GNU GPL V3
 
@@ -244,6 +244,8 @@ call :WingetUninstall 26720RandomSaladGamesLLC.3899848563C1F_kx24dqmazqk8j Games
 call :WingetUninstall 26720RandomSaladGamesLLC.Spades_kx24dqmazqk8j Games2
 call :WingetUninstall Google.PlayGames.Beta Games3
 call :WingetUninstall AD2F1837.OMENCommandCenter_v10z8vjag6ke6 Games4
+call :WingetUninstall MSIX\26720RandomSaladGamesLLC.3899848563C1F_1.0.140.0_x64__kx24dqmazqk8j Games5
+call :WingetUninstall MSIX\26720RandomSaladGamesLLC.Spades_6.1.134.0_x64__kx24dqmazqk8j Games6
 :: Messages opérateur Windows
 call :WingetUninstall Microsoft.Messaging_8wekyb3d8bbwe MessagesoperatorWindows
 :: print 3D
@@ -253,7 +255,8 @@ call :WingetUninstall Microsoft.OneConnect_8wekyb3d8bbwe One_Connect
 ::Microsoft TO Do
 call :WingetUninstall Microsoft.Todos_8wekyb3d8bbwe Microsoft_to_Do
 ::Power Automate
-call :WingetUninstall Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe Power_Automate
+call :WingetUninstall Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe Power_Automate1/2
+call :WingetUninstall MSIX\Microsoft.Windows.DevHome_0.0.0.0_x64__8wekyb3d8bbwe Power_Automate1/2
 ::Bing News
 call :WingetUninstall Microsoft.BingNews_8wekyb3d8bbwe Bing_News
 ::Microsoft Teams
@@ -267,6 +270,8 @@ call :WingetUninstall Microsoft.DevHome Dev_Home
 ::Microsoft Whiteboard
 call :WingetUninstall Microsoft.Whiteboard_8wekyb3d8bbwe Microsoft_Whiteboard
 ::Third-Party Preinstalled bloat
+:: Nord VPN
+call :WingetUninstall ARP\Machine\X86\{9EC178B2-ABCD-4833-B541-B535F7F04994} NordVPN
 :: Disney+
 call :WingetUninstall disney+ Disney+
 :: LinkedIn
@@ -274,7 +279,8 @@ call :WingetUninstall 7EE7776C.LinkedInforWindows_w1wdnht996qgy LinkedIn
 :: Camo Studio
 call :WingetUninstall ReincubateLtd.CamoStudio_9bq3v28c93p4r Camo_Studio
 ::Dropbox - offre promotionnelle
-call :WingetUninstall C27EB4BA.DropboxOEM_xbfy0k16fey96 Dropbox
+call :WingetUninstall C27EB4BA.DropboxOEM_xbfy0k16fey96 Dropbox1/2
+call :WingetUninstall MSIX\C27EB4BA.DropboxOEM_23.4.24.0_x64__xbfy0k16fey96 Dropbox2/2
 ::Clipchamp
 call :WingetUninstall Clipchamp.Clipchamp_yxz26nhyzhsrt Clipchamp
 ::WhatsApp
