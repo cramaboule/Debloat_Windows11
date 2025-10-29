@@ -1,5 +1,5 @@
 @echo off
-:: V1.26
+:: V1.27
 
 :: Release under the GNU GPL V3
 
@@ -96,12 +96,16 @@ rem check if Winget is already installed
 FOR /F %%g IN ('winget -v') do (SET version=%%g)
 echo %version%
 SET "result=%version:~1%"
-SET minwingetversion=9
+SET minwingetversionA=1
+SET minwingetversionB=11
 for /f "tokens=1,2 delims=." %%a in ("%result%") do (
-    set "resultfinal=%%b"
+    set "resultA=%%a"
+    set "resultB=%%b"
 )
-if %resultfinal% LEQ %minwingetversion% (
-	call :InstallWinget
+if %resultA% LEQ %minwingetversionA% (
+	if %resultB% LSS %minwingetversionB% (
+		call :InstallWinget
+	)
 )
 
 cls & echo ======================
