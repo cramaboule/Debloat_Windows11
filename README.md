@@ -6,8 +6,6 @@ Run the .bat file, drink a ☕ and let the :magic_wand: (magic) happens.
 Tested on :
 - Windows 11 25H2, Family and Pro
 - Windows 11 24H2, Family and Pro
-- Windows 11 23H2, Family and Pro
-- Windows 11 22H2, Family and Pro
 
 In order to make your own Sart Menu as you wish, make you own start2.bin as explain here: https://superuser.com/a/1690893/996827. Mine is like on the picture (Explorer, Settings, Control panel and Cmd).
 
