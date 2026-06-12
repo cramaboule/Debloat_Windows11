@@ -1,5 +1,5 @@
 @echo off
-:: V1.28
+:: V1.29
 
 :: Release under the GNU GPL V3
 
@@ -86,6 +86,7 @@ REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband\ /F /V 
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband\ /F /V Favorites /T REG_BINARY /D 00a00100003a001f80c827341f105c1042aa032ee45287d668260001002600efbe120000009d8db41e3e00da013b645d4e3e00da0181c27393ad01da01140056003100000000005257535311005461736b42617200400009000400efbe5057b374525753532e000000d2a301000000010000000000000000000000000000007f4042005400610073006b00420061007200000016000e01320097010000a754662a200046494c4545587e312e4c4e4b00007c0009000400efbe52575353525753532e000000fc4e0100000008000000000000000000520000000000a413a200460069006c00650020004500780070006c006f007200650072002e006c006e006b00000040007300680065006c006c00330032002e0064006c006c002c002d003200320030003600370000001c00220000001e00efbe02005500730065007200500069006e006e006500640000001c00120000002b00efbedb547a93ad01da011c00420000001d00efbe02004d006900630072006f0073006f00660074002e00570069006e0064006f00770073002e004500780070006c006f0072006500720000001c000000ff 2> nul
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband\ /V FavoritesChanges /T REG_QWORD /D 1 /F 2> nul
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband\ /V FavoritesVersion /T REG_QWORD /D 3 /F 2> nul
+call :VisiblePlaces
 taskkill /f /im explorer.exe & start explorer.exe 2> nul
 
 echo ======================
@@ -355,6 +356,46 @@ exit /B
 :WingetUninstall
 Echo Uninstall %2
 winget uninstall %1 --accept-source-agreements --silent --force --purge >nul 2>&1
+exit /B
+
+:: Menu Visible Places
+:VisiblePlaces
+:: Choose the icons (make 1 to apply)
+set DO_Documents=1
+set DO_Downloads=1
+set DO_Music=0
+set DO_Pictures=0
+set DO_Videos=0
+set DO_Network=0
+set DO_UserProfile=0
+set DO_Explorer=0
+set DO_Settings=1
+
+:: GUIDs in little-endian
+set HEX_Documents=CED5342D5AFA434582F222E6EAF7773C
+set HEX_Downloads=2FB367E3DE895543BFCE61F37B18A937
+set HEX_Music=20060BB0517F324CAA1E34CC547F7315
+set HEX_Pictures=A0073F380AE8804CB05A86DB845DBC4D
+set HEX_Videos=C5A5B342867DF44280A493FACA7A88B5
+set HEX_Network=448175FE0D08AE428BDA34ED97B66394
+set HEX_UserProfile=4AB0BD744AF9684F8BD64398071DA8BC
+set HEX_Explorer=BC248A140CD68942A0806ED9BBA24882
+set HEX_Settings=86087352AA5143429F7B2776584659D4
+
+set VALUE=
+if "%DO_Documents%"=="1"   set VALUE=%VALUE%%HEX_Documents%
+if "%DO_Downloads%"=="1"   set VALUE=%VALUE%%HEX_Downloads%
+if "%DO_Music%"=="1"       set VALUE=%VALUE%%HEX_Music%
+if "%DO_Pictures%"=="1"    set VALUE=%VALUE%%HEX_Pictures%
+if "%DO_Videos%"=="1"      set VALUE=%VALUE%%HEX_Videos%
+if "%DO_Network%"=="1"     set VALUE=%VALUE%%HEX_Network%
+if "%DO_UserProfile%"=="1" set VALUE=%VALUE%%HEX_UserProfile%
+if "%DO_Explorer%"=="1"    set VALUE=%VALUE%%HEX_Explorer%
+if "%DO_Settings%"=="1"    set VALUE=%VALUE%%HEX_Settings%
+
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Start" /v VisiblePlaces /t REG_BINARY /d %VALUE% /f
+
+echo Apply Value : %VALUE%
 exit /B
 
 :: this is the start2.bin file.
