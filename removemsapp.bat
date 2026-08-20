@@ -1,5 +1,5 @@
 @echo off
-:: V1.29
+:: V1.30
 
 :: Release under the GNU GPL V3
 
@@ -55,6 +55,8 @@ REG add "HKCU\Control Panel\Keyboard" /v "InitialKeyboardIndicators" /t REG_SZ /
 reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings /v TaskbarEndTask /t REG_DWORD /d 1 /f
 :: Disable password expire
 net accounts /maxpwage:unlimited
+:: Disable IPv6 Stack
+call :DisableIPv6
 :: do not put screen and pc to sleep
 powercfg /change monitor-timeout-ac 0 2> nul
 powercfg /change monitor-timeout-dc 0 2> nul
@@ -397,6 +399,28 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Start" /v VisiblePlaces 
 
 echo Apply Value : %VALUE%
 exit /B
+
+:DisableIPv6
+set "IPv6Disabled="
+
+for /f "tokens=3" %%A in ('reg query "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" /v DisabledComponents 2^>nul') do (
+    set "IPv6Disabled=%%A"
+)
+
+if /i "%IPv6Disabled%"=="0xff" (
+    echo [OK] IPv6 stack is already disabled.
+) else (
+    echo [INFO] IPv6 stack is enabled or not configured. Disabling IPv6 stack...
+    reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" /v DisabledComponents /t REG_DWORD /d 0xFF /f
+
+    if errorlevel 1 (
+        echo [ERROR] Unable to modify the registry.
+    ) else (
+        echo [OK] IPv6 stack has been disabled. A reboot is required.
+    )
+)
+
+exit /b
 
 :: this is the start2.bin file.
 :: make your own if you wish as explained here: https://superuser.com/a/1690893/996827
