@@ -1,5 +1,5 @@
 @echo off
-:: V1.30
+:: V1.31
 
 :: Release under the GNU GPL V3
 
@@ -27,10 +27,10 @@ IF %Temp1% == 0 (
 	REG add HKEY_CURRENT_USER\Console\%%%%Startup /v "DelegationConsole" /t REG_SZ /d {B23D10C0-E52E-411E-9D5B-C09FDF709C7D} /f 2> nul
 	REG add HKEY_CURRENT_USER\Console\%%%%Startup /v "DelegationTerminal" /t REG_SZ /d {B23D10C0-E52E-411E-9D5B-C09FDF709C7D} /f 2> nul	
 	IF %Temp2% == 1 (
-	start %~nx0 restarted noreboot
+	start "" "%~f0" restarted noreboot
 	exit
 	) ELSE (
-	start %~nx0 restarted
+	start "" "%~f0" restarted
 	exit
 	)
 )
@@ -77,7 +77,7 @@ reg add HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\Inpro
 reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows" /v "LegacyDefaultPrinterMode" /t REG_DWORD /d 1 /f 2> nul
 
 :: Make you own start2.bin if you wish as explain here: https://superuser.com/a/1690893/996827
-certutil -decode %0 "%~dp0start2.bin"
+certutil -decode "%~f0" "%~dp0start2.bin"
 xcopy "%~dp0start2.bin" "C:\Users\Default\AppData\Local\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\" /y 2> nul
 xcopy "%~dp0start2.bin" "%LocalAppData%\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\" /y 2> nul
 del "%~dp0start2.bin"
@@ -95,7 +95,7 @@ echo ======================
 echo Install winget
 echo ====================== & echo.
 
-rem installing dependies and Winget
+rem installing dependencies and Winget
 rem check if Winget is already installed
 FOR /F %%g IN ('winget -v') do (SET version=%%g)
 echo %version%
@@ -118,12 +118,12 @@ echo ====================== & echo.
 
 ::Prevents bloatware applications from returning and removes Start Menu suggestions               
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent /v "DisableWindowsConsumerFeatures" /t REG_DWORD /d 1 /f 2> nul
-reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "ContentDeliveryAllowed" /t REG_DWORD /d 1 /f 2> nul
-reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "OemPreInstalledAppsEnabled" /t REG_DWORD /d 1 /f 2> nul
-reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "PreInstalledAppsEnabled" /t REG_DWORD /d 1 /f 2> nul
-reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "PreInstalledAppsEverEnabled" /t REG_DWORD /d 1 /f 2> nul
-reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "SilentInstalledAppsEnabled" /t REG_DWORD /d 1 /f 2> nul
-reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "SystemPaneSuggestionsEnabled" /t REG_DWORD /d 1 /f 2> nul
+reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "ContentDeliveryAllowed" /t REG_DWORD /d 0 /f 2> nul
+reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "OemPreInstalledAppsEnabled" /t REG_DWORD /d 0 /f 2> nul
+reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "PreInstalledAppsEnabled" /t REG_DWORD /d 0 /f 2> nul
+reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "PreInstalledAppsEverEnabled" /t REG_DWORD /d 0 /f 2> nul
+reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "SilentInstalledAppsEnabled" /t REG_DWORD /d 0 /f 2> nul
+reg add HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager /v "SystemPaneSuggestionsEnabled" /t REG_DWORD /d 0 /f 2> nul
 REG DELETE HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\DevHomeUpdate /VA /F
 REG DELETE HKLM\SOFTWARE\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\OutlookUpdate /VA /F
 
@@ -131,7 +131,7 @@ echo OneDrive
 TASKKILL /f /im OneDrive.exe 2>nul
 %systemroot%\System32\OneDriveSetup.exe /uninstall 2> nul
 %systemroot%\SysWOW64\OneDriveSetup.exe /uninstall 2> nul
-powershell -command "(\"Microsoft.549981C3F5F10\", \"MSTeams\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.WindowsTerminal\", \"Microsoft.Todos\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | where-object PackageName -like $_ | Remove-AppxProvisionedPackage -online}" 2> nul
+powershell -command "(\"Microsoft.549981C3F5F10\", \"MSTeams\", \"Microsoft.MicrosoftEdge.Stable\", \"Clipchamp.Clipchamp\", \"Microsoft.MicrosoftSolitaireCollection\", \"Microsoft.BingNews\", \"Microsoft.BingWeather\", \"Microsoft.GamingApp\", \"Microsoft.GetHelp\", \"Microsoft.Getstarted\", \"Microsoft.MicrosoftOfficeHub\", \"Microsoft.People\", \"Microsoft.PowerAutomateDesktop\", \"Microsoft.WindowsTerminal\", \"Microsoft.Todos\", \"Microsoft.WindowsAlarms\", \"Microsoft.WindowsCamera\", \"Microsoft.windowscommunicationsapps\", \"Microsoft.WindowsFeedbackHub\", \"Microsoft.WindowsMaps\", \"Microsoft.WindowsSoundRecorder\", \"Microsoft.Xbox.TCUI\", \"Microsoft.XboxGameOverlay\", \"Microsoft.XboxGamingOverlay\", \"Microsoft.XboxIdentityProvider\", \"Microsoft.XboxSpeechToTextOverlay\", \"Microsoft.YourPhone\", \"Microsoft.ZuneMusic\", \"Microsoft.ZuneVideo\", \"MicrosoftCorporationII.QuickAssist\", \"MicrosoftWindows.Client.WebExperience\", \"MicrosoftTeams\", \"Microsoft.LanguageExperiencePackfr-FR\", \"MicrosoftCorporationII.MicrosoftFamily\", \"Microsoft.MicrosoftStickyNotes\").ForEach{write-host $_ ; Get-AppxPackage -AllUsers -Name $_ | Remove-AppxPackage -AllUsers ; Get-AppxProvisionedPackage -online | Where-Object DisplayName -eq $_ | Remove-AppxProvisionedPackage -online}" 2> nul
 
 :: Remove Outlook For Windows by https://github.com/matej137/OutlookRemover
 Echo Removing New Outlook For Windows
@@ -139,11 +139,12 @@ mkdir %appdata%\NewOutlook
 if %PROCESSOR_ARCHITECTURE%==AMD64 copy "%~dp0AppxManifest.xml" %appdata%\NewOutlook
 if %PROCESSOR_ARCHITECTURE%==x86 copy "%~dp0AppxManifestx86.xml" %appdata%\NewOutlook\AppxManifest.xml
 if %PROCESSOR_ARCHITECTURE%==ARM64 copy "%~dp0AppxManifest-ARM64.xml" %appdata%\NewOutlook\AppxManifest.xml
-powershell "New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -PropertyType DWORD -Value 1 -Force" >NUL 2>NUL
-echo Uninstalling the original version (reffer to readme for errors/red text)
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" /v AllowDevelopmentWithoutDevLicense /t REG_DWORD /d 1 /f >nul 2>&1
+echo Uninstalling the original version (refer to readme for errors/red text)
 powershell "get-appxpackage -allusers Microsoft.OutlookForWindows | Remove-AppxPackage -allusers"
 echo installing the patched one (Errors are bad now)
 powershell add-appxpackage -register "'%appdata%\NewOutlook\AppxManifest.xml'"
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" /v AllowDevelopmentWithoutDevLicense /t REG_DWORD /d 0 /f >nul 2>&1
 echo done !
 
 :: Remove Office 365 Preinstalled. Setup.exe is part of officedeploymenttool_17830-20162.exe
@@ -153,7 +154,7 @@ echo done !
 ping 127.0.0.1 -n 3 >nul 2>&1
 
 cls & echo ======================
-echo Remove packages segond stage. Please Wait...
+echo Remove packages second stage. Please Wait...
 echo ====================== & echo.
 winget -v
 echo.
@@ -181,7 +182,7 @@ call :WingetUninstall Microsoft.XboxGameOverlay_8wekyb3d8bbwe Xbox_7/7
 call :WingetUninstall Microsoft.ZuneMusic_8wekyb3d8bbwe Groove_Music
 
 ::Feedback Hub
-call :WingetUninstall Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe Feedback Hub
+call :WingetUninstall Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe Feedback_Hub
 
 ::Microsoft-Tips
 call :WingetUninstall Microsoft.Getstarted_8wekyb3d8bbwe Microsoft-Tips
@@ -266,8 +267,9 @@ call :WingetUninstall Microsoft.OneConnect_8wekyb3d8bbwe One_Connect
 ::Microsoft TO Do
 call :WingetUninstall Microsoft.Todos_8wekyb3d8bbwe Microsoft_to_Do
 ::Power Automate
-call :WingetUninstall Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe Power_Automate1/2
-call :WingetUninstall MSIX\Microsoft.Windows.DevHome_0.0.0.0_x64__8wekyb3d8bbwe Power_Automate1/2
+call :WingetUninstall Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe Power_Automate
+:: Dev Home
+call :WingetUninstall MSIX\Microsoft.Windows.DevHome_0.0.0.0_x64__8wekyb3d8bbwe Dev_Home
 ::Bing News
 call :WingetUninstall Microsoft.BingNews_8wekyb3d8bbwe Bing_News
 ::Microsoft Teams
@@ -275,7 +277,7 @@ call :WingetUninstall MicrosoftTeams_8wekyb3d8bbwe Microsoft_Teams
 ::Microsoft Family
 call :WingetUninstall MicrosoftCorporationII.MicrosoftFamily_8wekyb3d8bbwe Microsoft_Family
 ::Quick Assist
-call :WingetUninstall MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe Quick _Assist
+call :WingetUninstall MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe Quick_Assist
 ::Dev Home
 call :WingetUninstall Microsoft.DevHome Dev_Home
 ::Microsoft Whiteboard
@@ -308,8 +310,7 @@ call :WingetUninstall Microsoft.StorePurchaseApp_8wekyb3d8bbwe StorePurchaseApp
 ::call :WingetUninstall Microsoft.VP9VideoExtensions_8wekyb3d8bbwe VP9VideoExtensions
 ::call :WingetUninstall Microsoft.WebMediaExtensions_8wekyb3d8bbwe WebMediaExtensions
 call :WingetUninstall Microsoft.WindowsAlarms_8wekyb3d8bbwe Windows_Alarms
-call :WingetUninstall Microsoft.WindowsCamera_8wekyb3d8bbwe Windows_Camera
-call :WingetUninstall MicrosoftWindows.Client.WebExperiencecw5n1h2txyewy Web_Experience
+call :WingetUninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy Web_Experience
 :: PC Health tool
 call :WingetUninstall {6A2A8076-135F-4F55-BB02-DED67C8C6934} PC_Health_tool
 :: Microsoft Update Health Tool
@@ -322,7 +323,7 @@ wsreset -i
 winget install --id 9MZ95KL8MR0L --accept-source-agreements --silent --accept-package-agreements
 ::Paint
 winget install --id 9PCFS5B6T72H --accept-source-agreements --silent --accept-package-agreements
-::Calulator
+::Calculator
 winget install --id 9WZDNCRFHVN5 --accept-source-agreements --silent --accept-package-agreements
 ::Photo
 winget install --id 9WZDNCRFJBH4 --accept-source-agreements --silent --accept-package-agreements
@@ -343,17 +344,40 @@ exit 0
 exit /B
 
 :InstallWinget
-powershell -command $ProgressPreference = 'SilentlyContinue' ; ^
-	write-host 'Downloading Winget and dependies' ; ^
-	(New-Object System.Net.WebClient).DownloadFile('https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx', 'Microsoft.VCLibs.x64.14.00.Desktop.appx') ; ^
-	(New-Object System.Net.WebClient).DownloadFile('https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3', 'microsoft.ui.xaml.2.7.3.nupkg.zip') ; ^
-	(New-Object System.Net.WebClient).DownloadFile('https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle', 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle') ; ^
-	write-host 'Installing Winget and dependies' ; ^
-	Expand-Archive -Path '.\microsoft.ui.xaml.2.7.3.nupkg.zip' -Force ; ^
-	Add-AppXPackage -Path '.\microsoft.ui.xaml.2.7.3.nupkg\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx' ; ^
-	Add-AppXPackage -Path '.\Microsoft.VCLibs.x64.14.00.Desktop.appx' ; ^
-	Add-AppXPackage -Path '.\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle' 2> nul
-exit /B
+echo [INFO] Downloading winget and its dependencies...
+set "WG_DIR=%TEMP%\WingetSetup"
+set "WG_ARCH=x64"
+if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" set "WG_ARCH=arm64"
+if exist "%WG_DIR%" rd /s /q "%WG_DIR%"
+mkdir "%WG_DIR%"
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+ "$ProgressPreference='SilentlyContinue'; $ErrorActionPreference='Stop';" ^
+ "$d='%WG_DIR%'; $a='%WG_ARCH%';" ^
+ "$base='https://github.com/microsoft/winget-cli/releases/latest/download/';" ^
+ "try {" ^
+ "  Invoke-WebRequest ($base+'DesktopAppInstaller_Dependencies.zip') -OutFile (Join-Path $d 'deps.zip') -UseBasicParsing;" ^
+ "  Invoke-WebRequest ($base+'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle') -OutFile (Join-Path $d 'winget.msixbundle') -UseBasicParsing;" ^
+ "  Expand-Archive (Join-Path $d 'deps.zip') (Join-Path $d 'deps') -Force;" ^
+ "  $deps = Get-ChildItem (Join-Path $d 'deps') -Recurse -Filter *.appx | Where-Object { $_.Directory.Name -eq $a };" ^
+ "  Add-AppxPackage -Path (Join-Path $d 'winget.msixbundle') -DependencyPath $deps.FullName -ForceApplicationShutdown;" ^
+ "  exit 0" ^
+ "} catch { Write-Host ('[ERROR] ' + $_.Exception.Message); exit 1 }"
+set "WG_RC=%ERRORLEVEL%"
+rd /s /q "%WG_DIR%" 2>nul
+if not "%WG_RC%"=="0" (echo [ERROR] winget installation failed. & exit /b 1)
+call :WaitWinget 15 || (echo [ERROR] winget still not found. & exit /b 1)
+echo [OK] winget installed.
+exit /b 0
+
+:WaitWinget
+set /a WG_T=%~1
+
+:WaitWingetLoop
+where winget >nul 2>&1 && exit /b 0
+if %WG_T% LEQ 0 exit /b 1
+set /a WG_T-=1
+ping 127.0.0.1 -n 2 >nul
+goto :WaitWingetLoop
 
 :WingetUninstall
 Echo Uninstall %2
